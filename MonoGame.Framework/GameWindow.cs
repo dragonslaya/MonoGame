@@ -69,8 +69,14 @@ non-infringement.
 using System;
 using System.ComponentModel;
 
-namespace Microsoft.Xna.Framework {
-	public abstract class GameWindow {
+#if WINRT
+using Windows.UI.ViewManagement;
+#endif
+
+namespace Microsoft.Xna.Framework 
+{
+	public abstract class GameWindow 
+    {
 		#region Properties
 
 		[DefaultValue(false)]
@@ -85,15 +91,25 @@ namespace Microsoft.Xna.Framework {
 		public abstract string ScreenDeviceName { get; }
 
 		private string _title;
-		public string Title {
+		public string Title 
+        {
 			get { return _title; }
-			set {
-				if (_title != value) {
+			set 
+            {
+				if (_title != value) 
+                {
 					SetTitle(value);
 					_title = value;
 				}
 			}
 		}
+
+#if WINRT
+        /// <summary>
+        /// Returns the current Metro application view state.
+        /// </summary>
+        public abstract ApplicationViewState ViewState { get; }
+#endif
 
 		#endregion Properties
 

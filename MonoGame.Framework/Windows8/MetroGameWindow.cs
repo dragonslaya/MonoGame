@@ -62,6 +62,9 @@ namespace Microsoft.Xna.Framework
         private readonly List<Keys> _keys;
         private Rectangle _clientBounds;
 
+        private ApplicationViewState _viewState;
+        private DisplayOrientation _orientation;
+
         #region Internal Properties
 
         internal Game Game { get; set; }
@@ -78,6 +81,8 @@ namespace Microsoft.Xna.Framework
 
         public override Rectangle ClientBounds { get { return _clientBounds; } }
 
+        public override ApplicationViewState ViewState { get { return _viewState; } }
+
         public override bool AllowUserResizing
         {
             get { return false; }
@@ -87,10 +92,7 @@ namespace Microsoft.Xna.Framework
             }
         }
 
-        public override DisplayOrientation CurrentOrientation
-        {
-            get { return DisplayOrientation.LandscapeLeft; }
-        }
+        public override DisplayOrientation CurrentOrientation { get { return _orientation; } }
 
         protected internal override void SetSupportedOrientations(DisplayOrientation orientations)
         {
@@ -148,6 +150,9 @@ namespace Microsoft.Xna.Framework
             _coreWindow.KeyUp += Keyboard_KeyUp;
             
             ApplicationView.GetForCurrentView().ViewStateChanged += Application_ViewStateChanged;
+            
+            _viewState = ApplicationViewState.FullScreenLandscape;
+            _orientation = DisplayOrientation.LandscapeLeft;
 
             var bounds = _coreWindow.Bounds;
             SetClientBounds(bounds.Width, bounds.Height);
@@ -157,8 +162,7 @@ namespace Microsoft.Xna.Framework
 
         private void Application_ViewStateChanged(ApplicationView sender, ApplicationViewStateChangedEventArgs args)
         {
-            // TODO: We may want to expose this event via GameWindow
-            // only in WinRT builds....  not sure yet.
+            _viewState = args.ViewState;
         }
 
         private void Window_Closed(CoreWindow sender, CoreWindowEventArgs args)
