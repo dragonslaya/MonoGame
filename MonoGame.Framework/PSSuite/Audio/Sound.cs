@@ -1,7 +1,7 @@
 using System;
 
-using PssSound = Sce.Pss.Core.Audio.Sound;
-using Sce.Pss.Core.Audio;
+using PssSound = Sce.PlayStation.Core.Audio.Sound;
+using Sce.PlayStation.Core.Audio;
 
 namespace Microsoft.Xna.Framework.Audio
 {
@@ -21,7 +21,9 @@ namespace Microsoft.Xna.Framework.Audio
         public void Dispose()
         {
             _soundPlayer.Stop();
-			_soundPlayer.Dispose();
+            
+            // gives Error when Soundplayer is reused
+//			_soundPlayer.Dispose();
             _sound.Dispose();
         }
 
@@ -58,7 +60,7 @@ namespace Microsoft.Xna.Framework.Audio
 			if (_soundPlayer != null )
 			{
 				_soundPlayer.Volume = this.Volume;
-				_soundPlayer.PlaybackRate = this.Rate;
+				_soundPlayer.PlaybackRate = this.Rate + 1.0f;
 				_soundPlayer.Pan = this.Pan;
 				_soundPlayer.Loop = this.Looping;
 				_soundPlayer.Play();
@@ -89,7 +91,6 @@ namespace Microsoft.Xna.Framework.Audio
 
             this.Looping = looping;
             this.Volume = volume;
-            this.Rate = 1.0f;
         }
 
         public Sound(byte[] audiodata, float volume, bool looping)
@@ -99,7 +100,6 @@ namespace Microsoft.Xna.Framework.Audio
 
             this.Looping = looping;
             this.Volume = volume;
-            this.Rate = 1.0f;
         }
     }
 }
